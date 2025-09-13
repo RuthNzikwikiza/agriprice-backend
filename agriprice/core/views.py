@@ -1,5 +1,3 @@
-
-# core/views.py
 from rest_framework import generics, viewsets, status, filters
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -15,6 +13,7 @@ from .serializers import UserProfileSerializer, ProductSerializer
 from rest_framework.views import APIView
 from .models import PricePrediction, Notification 
 from .serializers import PricePredictionSerializer, NotificationSerializer
+from rest_framework import permissions
 
 # Registration
 class RegisterView(generics.CreateAPIView):
@@ -46,15 +45,13 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         user = authenticate(username=email, password=password)
         if not user:
             raise serializers.ValidationError("Invalid email or password")
-
+            return super().validate(attrs)
 class PricePredictionRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PricePrediction.objects.all()
     serializer_class = PricePredictionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-
-        return super().validate(attrs)
 
 class EmailTokenObtainPairView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer

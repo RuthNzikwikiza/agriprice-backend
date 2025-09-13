@@ -35,4 +35,9 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = '__all__'
+        
+class PricePredictionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PricePrediction
+        fields = '__all__'
 

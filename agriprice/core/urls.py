@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserProfileViewSet, ProductViewSet, RegisterView,EmailTokenObtainPairView, TokenRefreshView
-from . import views
+from .views import UserProfileViewSet, ProductViewSet, RegisterView, EmailTokenObtainPairView, TokenRefreshView, PricePredictionListCreateView, PricePredictionRetrieveUpdateDeleteView, NotificationListView
+
 router = DefaultRouter()
 router.register(r'profiles', UserProfileViewSet)
 router.register(r'products', ProductViewSet)
@@ -9,16 +9,9 @@ router.register(r'products', ProductViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name='register'),
-    path('auth/login/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]
-
-urlpatterns = [
-    # Price Predictions
-    path('price-predictions/', views.PricePredictionListCreateView.as_view(), name='price-predictions-list-create'),
-    path('price-predictions/<int:pk>/', views.PricePredictionRetrieveUpdateDeleteView.as_view(), name='price-predictions-rud'),
-
-
-    # Notifications (read-only)
-    path('notifications/', views.NotificationListView.as_view(), name='notifications-list'),
+    path('login/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('price-predictions/', PricePredictionListCreateView.as_view(), name='price-predictions-list-create'),
+    path('price-predictions/<int:pk>/', PricePredictionRetrieveUpdateDeleteView.as_view(), name='price-predictions-rud'),
+    path('notifications/', NotificationListView.as_view(), name='notifications-list'),
 ]
