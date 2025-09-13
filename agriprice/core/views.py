@@ -14,7 +14,10 @@ from rest_framework.views import APIView
 from .models import PricePrediction, Notification 
 from .serializers import PricePredictionSerializer, NotificationSerializer
 from rest_framework import permissions
+from django.http import HttpResponse
 
+def home(request):
+    return HttpResponse("Hello from Django!")
 # Registration
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
