@@ -109,6 +109,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://agriprice-info-site.vercel.app/", 
 ]
+ALLOWED_HOSTS = ["*"]
 
 if os.environ.get("CORS_ALLOW_ALL", "False") == "True":
     CORS_ALLOW_ALL_ORIGINS = True
