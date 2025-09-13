@@ -1,45 +1,16 @@
+# core/views.py
 from rest_framework import generics, viewsets, status, filters
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import UserProfile, Product
 from .serializers import UserSerializer, UserProfileSerializer, ProductSerializer
 from .permissions import IsFarmerOrReadOnly, IsBuyer
-
-
-# core/views.py
-from rest_framework import generics
 from .models import PricePrediction, Notification, UserProfile, Product
 from .serializers import PricePredictionSerializer, NotificationSerializer, UserProfileSerializer, ProductSerializer
-from rest_framework import viewsets
-
-
-# prediction price
-class PricePredictionListCreateView(generics.ListCreateAPIView):
-    queryset = PricePrediction.objects.all()
-    serializer_class = PricePredictionSerializer
-
-
-class PricePredictionRetrieveUpdateDeleteView(generics.
-                                              RetrieveUpdateDestroyAPIView):
-    queryset = PricePrediction.objects.all()
-    serializer_class = PricePredictionSerializer
-
-# notifications
-
-
-class NotificationListCreateView(generics.ListCreateAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-
-
-class NotificationRetrieveUpdateDeleteView(generics.
-                                           RetrieveUpdateDestroyAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
 
 # Registration
 class RegisterView(generics.CreateAPIView):
@@ -75,14 +46,25 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
     permission_classes = [IsBuyer]
 
-
 # Product viewset
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated, IsFarmerOrReadOnly]  
+    permission_classes = [IsAuthenticated, IsFarmerOrReadOnly]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'description', 'season'] 
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    search_fields = ['name', 'description', 'season']
+class PricePredictionListCreateView(generics.ListCreateAPIView):
+    queryset = PricePrediction.objects.all()
+    serializer_class = PricePredictionSerializer
+
+class PricePredictionRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PricePrediction.objects.all()
+    serializer_class = PricePredictionSerializer
+
+class NotificationListCreateView(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+class NotificationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer

@@ -1,10 +1,8 @@
-# core/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 
-# users
 class User(AbstractUser):
     email = models.EmailField(
         unique=True,
@@ -29,7 +27,7 @@ class User(AbstractUser):
         return self.username
 
 
-# User Profile
+
 ROLE_CHOICES = [
     ('farmer', 'Farmer'),
     ('buyer', 'Buyer'),
@@ -61,7 +59,7 @@ class UserProfile(models.Model):
         return f"{self.user.username} Profile"
 
 
-# Product
+
 UNIT_CHOICES = [
     ('kg', 'Kilogram'),
     ('ton', 'Ton'),
@@ -72,7 +70,6 @@ SEASON_CHOICES = [
     ('dry', 'Dry'),
     ('all', 'All-season'),
 ]
-
 
 class Product(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='products')
@@ -88,3 +85,24 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.price}"
+
+
+
+class PricePrediction(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='predictions')
+    predicted_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"Prediction for {self.product.name}: {self.predicted_price}"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications', null=True, blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification: {self.message[:30]}..."

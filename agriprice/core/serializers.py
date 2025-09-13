@@ -1,8 +1,6 @@
-
 from rest_framework import serializers
-from .models import User,UserProfile, Product
+from .models import User, UserProfile, Product, PricePrediction, Notification
 
-# User serializer for registration
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -13,9 +11,9 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
-# UserProfile serializer
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -24,3 +22,19 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+
+class PricePredictionSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = PricePrediction
+        fields = ['id', 'product', 'predicted_price', 'created_at', 'created_by']
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = ['id', 'user', 'message', 'created_at', 'read']
