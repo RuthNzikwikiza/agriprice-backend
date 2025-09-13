@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import User, UserProfile, Product
+from .models import PricePrediction, Notification
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +25,14 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
+
+
+        model = PricePrediction
+        fields = '__all__'
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
 
