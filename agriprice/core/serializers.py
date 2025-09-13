@@ -24,17 +24,3 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PricePredictionSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
-
-    class Meta:
-        model = PricePrediction
-        fields = ['id', 'product', 'predicted_price', 'created_at', 'created_by']
-
-
-class NotificationSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Notification
-        fields = ['id', 'user', 'message', 'created_at', 'read']

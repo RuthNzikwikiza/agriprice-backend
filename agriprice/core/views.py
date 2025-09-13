@@ -9,8 +9,8 @@ from rest_framework import serializers
 from .models import UserProfile, Product
 from .serializers import UserSerializer, UserProfileSerializer, ProductSerializer
 from .permissions import IsFarmerOrReadOnly, IsBuyer
-from .models import PricePrediction, Notification, UserProfile, Product
-from .serializers import PricePredictionSerializer, NotificationSerializer, UserProfileSerializer, ProductSerializer
+from .models import  UserProfile, Product
+from .serializers import UserProfileSerializer, ProductSerializer
 
 # Registration
 class RegisterView(generics.CreateAPIView):
@@ -53,18 +53,3 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsFarmerOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description', 'season']
-class PricePredictionListCreateView(generics.ListCreateAPIView):
-    queryset = PricePrediction.objects.all()
-    serializer_class = PricePredictionSerializer
-
-class PricePredictionRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = PricePrediction.objects.all()
-    serializer_class = PricePredictionSerializer
-
-class NotificationListCreateView(generics.ListCreateAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-
-class NotificationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
