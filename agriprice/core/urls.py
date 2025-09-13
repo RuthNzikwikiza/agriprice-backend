@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from .views import UserProfileViewSet, ProductViewSet, RegisterView, EmailTokenObtainPairView, TokenRefreshView, PricePredictionListCreateView, PricePredictionRetrieveUpdateDeleteView, NotificationListView
 from . import views
@@ -7,6 +8,7 @@ router.register(r'profiles', UserProfileViewSet)
 router.register(r'products', ProductViewSet)
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', views.home, name='home'), 
     path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name='register'),

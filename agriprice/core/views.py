@@ -17,7 +17,7 @@ from rest_framework import permissions
 from django.http import HttpResponse
 
 def home(request):
-    return HttpResponse("Hello from Django!")
+    return HttpResponse("Hello Agriprice is live")
 # Registration
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
