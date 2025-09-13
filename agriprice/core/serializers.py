@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile, Product, PricePrediction, Notification
+from .models import User, UserProfile, Product
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
