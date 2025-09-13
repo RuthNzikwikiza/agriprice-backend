@@ -1,8 +1,10 @@
+# core/models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 
+# users
 class User(AbstractUser):
     email = models.EmailField(
         unique=True,
@@ -70,6 +72,7 @@ SEASON_CHOICES = [
     ('dry', 'Dry'),
     ('all', 'All-season'),
 ]
+
 
 class Product(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='products')

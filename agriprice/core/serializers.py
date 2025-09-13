@@ -1,5 +1,6 @@
+
 from rest_framework import serializers
-from .models import User, UserProfile, Product
+from .models import User,UserProfile, Product
 
 # User serializer for registration
 class UserSerializer(serializers.ModelSerializer):
@@ -19,7 +20,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = '__all__'
 
-# Product serializer
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
