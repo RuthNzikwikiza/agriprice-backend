@@ -26,9 +26,15 @@ class RegisterView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
-
+        # self.perform_create(serializer)
+        # return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+        user = serializer.save()
+        return Response({
+            "message": "User created successfully",
+            "username": user.username,
+            "email": user.email,
+            "role": user.profile.role
+        }, status=status.HTTP_201_CREATED)
 # Price Predictions Views
 
 class PricePredictionListCreateView(generics.ListCreateAPIView):
