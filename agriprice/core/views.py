@@ -52,7 +52,7 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         user = authenticate(
             request=self.context.get('request'),
-            username=email,   # 👈 use username= if AUTH_USER_MODEL still maps email to username
+            username=email,   
             password=password
         )
 
