@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         role = validated_data.pop('role')
         user = User.objects.create_user(**validated_data)
-        UserProfile.objects.create(user=user, role=role)
+        UserProfile.objects.create(user=user, role=role, phone_number="", location="")
         return user
     # def create(self, validated_data):
     #     user = User.objects.create_user(**validated_data)

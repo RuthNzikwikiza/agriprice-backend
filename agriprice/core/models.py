@@ -40,9 +40,9 @@ STATUS_CHOICES = [
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, blank=True)
     verified = models.BooleanField(default=False)
     points = models.PositiveIntegerField(default=0)
     ratings = models.DecimalField(max_digits=4, decimal_places=1, default=0)
