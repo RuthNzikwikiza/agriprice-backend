@@ -113,8 +113,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOWED_ORIGINS = True
-    
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://agriprice-info-site.vercel.app", 
+]
 ALLOWED_HOSTS = ["*"]
 
 if os.environ.get("CORS_ALLOW_ALL", "False") == "True":
