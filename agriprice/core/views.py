@@ -46,15 +46,25 @@ class PricePredictionListCreateView(generics.ListCreateAPIView):
 class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = 'email'
 
-
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
-        user = authenticate(request=self.context.get('request'), email=email, password=password)
-        # user = authenticate(username=email, password=password)
+
+        user = authenticate(
+            request=self.context.get('request'),
+            username=email,   # 👈 use username= if AUTH_USER_MODEL still maps email to username
+            password=password
+        )
+
         if not user:
             raise serializers.ValidationError("Invalid email or password")
-            return super().validate(attrs)
+
+        # continue with normal JWT token creation
+        data = super().validate(attrs)
+        data['email'] = user.email
+        data['username'] = user.username
+        return data
+
 class PricePredictionRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PricePrediction.objects.all()
     serializer_class = PricePredictionSerializer
