@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-
+    username = serializers.CharField(source='user.username', read_only=True) 
     class Meta:
         model = UserProfile
         fields = '__all__'
