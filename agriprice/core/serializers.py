@@ -28,8 +28,12 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
-
-
+        read_only_fields = ['owner', 'created_at'] 
+        def get_owner(self, obj):
+          return {
+            "username": obj.owner.user.username,
+            "location": obj.owner.location,
+        }
 class PricePredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricePrediction
