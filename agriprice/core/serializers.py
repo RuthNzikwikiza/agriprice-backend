@@ -21,7 +21,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True) 
     class Meta:
         model = UserProfile
-        fields = '__all__'
+        fields = ['id', 'user', 'username', 'phone_number', 'role', 'location',
+            'verified', 'points', 'ratings', 'status', 'bio', 'profile_photo']
 
 
 class ProductSerializer(serializers.ModelSerializer):
