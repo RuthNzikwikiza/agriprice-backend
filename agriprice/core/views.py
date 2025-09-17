@@ -104,8 +104,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description', 'season']
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user.profile,
-        location=serializer.validated_data.get("location", ""))
+        serializer.save(owner=self.request.user.profile,)
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
