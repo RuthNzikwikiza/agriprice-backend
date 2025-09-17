@@ -16,27 +16,36 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+# Simplified UserProfileSerializer
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True) 
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'username', 'phone_number', 'role', 'location',
-            'verified', 'points', 'ratings', 'status', 'bio', 'profile_photo']
+        fields = ['id', 'username', 'role', 'profile_photo']
 
 
+# ProductSerializer with owner as simple username
 class ProductSerializer(serializers.ModelSerializer):
-    owner = UserProfileSerializer(read_only=True)
+    owner = serializers.SerializerMethodField()  # just return username
     image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
         fields = '__all__'
-        read_only_fields = ['owner', 'created_at'] 
+        read_only_fields = ['owner', 'created_at']
+
+    def get_owner(self, obj):
+        # return username only
+        return obj.owner.user.username if obj.owner and obj.owner.user else None
+
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
             return request.build_absolute_uri(obj.image.url)
         return None
+
+
 class PricePredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricePrediction
