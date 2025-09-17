@@ -85,7 +85,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     season = models.CharField(max_length=16, choices=SEASON_CHOICES, default='all')
-
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
     class Meta:
         unique_together = ('owner', 'name')
 

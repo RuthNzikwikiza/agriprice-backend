@@ -5,7 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from django.http import HttpResponse
-
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import UserProfile, Product, PricePrediction, Notification
 from .serializers import (
     UserSerializer,
@@ -100,6 +100,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    parser_classes = (MultiPartParser, FormParser)
     permission_classes = [permissions.IsAuthenticated, IsFarmerOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description', 'season']
