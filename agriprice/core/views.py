@@ -105,7 +105,18 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description', 'season']
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user.profile,)
+        serializer.save(owner=self.request.user.profile)
+    def update(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != request.user:
+            raise PermissionDenied("You cannot edit someone else's product")
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != request.user:
+            raise PermissionDenied("You cannot delete someone else's product")
+        return super().destroy(request, *args, **kwargs)
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
