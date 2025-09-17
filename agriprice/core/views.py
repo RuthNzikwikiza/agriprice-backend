@@ -108,15 +108,19 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user.profile)
     def update(self, request, *args, **kwargs):
         product = self.get_object()
-        if product.owner != request.user:
+        if product.owner != request.user.profile:
             raise PermissionDenied("You cannot edit someone else's product")
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         product = self.get_object()
-        if product.owner != request.user:
+        if product.owner != request.user.profile:
             raise PermissionDenied("You cannot delete someone else's product")
         return super().destroy(request, *args, **kwargs)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 class NotificationListView(generics.ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]

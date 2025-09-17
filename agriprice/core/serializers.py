@@ -26,10 +26,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     owner = UserProfileSerializer(read_only=True)
+    image_url = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = '__all__'
         read_only_fields = ['owner', 'created_at'] 
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url)
+        return None
 class PricePredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricePrediction
