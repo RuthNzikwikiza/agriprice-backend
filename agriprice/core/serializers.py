@@ -25,6 +25,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserProfileSerializer(read_only=True)
     class Meta:
         model = Product
         fields = '__all__'
