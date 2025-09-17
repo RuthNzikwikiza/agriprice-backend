@@ -26,7 +26,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'role', 'profile_photo']
 
 class ProductSerializer(serializers.ModelSerializer):
-    owner = serializers.SerializerMethodField()  
+    owner = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -38,10 +38,13 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.owner.user.username if obj.owner and obj.owner.user else None
 
     def get_image_url(self, obj):
+
         if obj.image:
             try:
+                
                 return obj.image.url
-            except Exception:
+            except Exception as e:
+                print(f"Error getting image URL: {e}")
                 return None
         return None
 
