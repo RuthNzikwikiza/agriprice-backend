@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "core",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 MIDDLEWARE = [
@@ -87,8 +89,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -122,3 +122,11 @@ ALLOWED_HOSTS = ["*"]
 
 if os.environ.get("CORS_ALLOW_ALL", "False") == "True":
     CORS_ALLOW_ALL_ORIGINS = True
+# Cloudinary settings
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dmewkrxzk',
+    'API_KEY': '821886382863267',
+    'API_SECRET': 'qLeOuOEFbjEe4MMDysnXviCGuR8',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
