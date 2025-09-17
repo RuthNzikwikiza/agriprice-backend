@@ -24,25 +24,22 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['id', 'username', 'role', 'profile_photo']
 
-
-# ProductSerializer with owner as simple username
 class ProductSerializer(serializers.ModelSerializer):
-    owner = serializers.SerializerMethodField()  # just return username
+    owner = serializers.SerializerMethodField()  
     image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'price', 'image', 'image_url', 'owner', 'created_at']
         read_only_fields = ['owner', 'created_at']
 
     def get_owner(self, obj):
-        # return username only
         return obj.owner.user.username if obj.owner and obj.owner.user else None
 
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
-            return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
         return None
 
 
