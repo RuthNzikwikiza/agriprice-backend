@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import ROLE_CHOICES, User, UserProfile, Product, PricePrediction, Notification
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(choices=ROLE_CHOICES, write_only=True)
@@ -37,9 +38,11 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.owner.user.username if obj.owner and obj.owner.user else None
 
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image:
-            return obj.image.url
+            try:
+                return obj.image.url
+            except Exception:
+                return None
         return None
 
 
