@@ -34,8 +34,10 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'price', 'unit', 'season', 'image', 'image_url', 'owner_username', 'created_at']
         read_only_fields = ['owner', 'created_at']
 
-    def get_owner_username(self, obj):
-        return obj.owner.username if obj.owner else "Unknown"
+     def get_owner_username(self, obj):
+        if obj.owner and hasattr(obj.owner, 'user'):
+            return obj.owner.user.username
+        return "Unknown"
 
     def get_image_url(self, obj):
 
