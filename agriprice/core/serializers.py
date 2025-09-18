@@ -26,12 +26,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'role', 'profile_photo']
 
 class ProductSerializer(serializers.ModelSerializer):
-    owner_username = serializers.SerializerMethodField()
+    owner = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'unit', 'season', 'image', 'image_url', 'owner_username', 'created_at']
+        fields = ['id', 'name', 'description', 'price', 'unit', 'season' 'image', 'image_url', 'owner', 'created_at']
         read_only_fields = ['owner', 'created_at']
 
     def get_owner(self, obj):
