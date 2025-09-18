@@ -31,26 +31,26 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'unit', 'season', 'image', 'image_url', 'owner_username', 'created_at']
+        fields = [
+            'id', 'name', 'description', 'price', 'unit', 'season',
+            'image', 'image_url', 'owner_username', 'created_at'
+        ]
         read_only_fields = ['owner', 'created_at']
 
-     def get_owner_username(self, obj):
+    def get_owner_username(self, obj):
+        # Adjust according to your UserProfile relation
         if obj.owner and hasattr(obj.owner, 'user'):
             return obj.owner.user.username
         return "Unknown"
 
     def get_image_url(self, obj):
-
         if obj.image:
             try:
-                
                 return obj.image.url
             except Exception as e:
                 print(f"Error getting image URL: {e}")
                 return None
         return None
-
-
 class PricePredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricePrediction
