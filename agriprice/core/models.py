@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-
+from cloudinary.models import CloudinaryField
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -85,7 +85,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     season = models.CharField(max_length=16, choices=SEASON_CHOICES, default='all')
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    image = CloudinaryField("image", blank=True, null=True)
     class Meta:
         unique_together = ('owner', 'name')
 
