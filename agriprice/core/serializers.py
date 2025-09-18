@@ -31,7 +31,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'unit', 'season' 'image', 'image_url', 'owner', 'created_at']
+        fields = ['id', 'name', 'description', 'price', 'unit', 'season', 'image', 'image_url', 'owner', 'created_at']
         read_only_fields = ['owner', 'created_at']
 
     def get_owner(self, obj):
