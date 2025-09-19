@@ -2,6 +2,7 @@ from django.urls import path, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from .views import (
+    CurrentUserView,
     UserProfileViewSet,
     ProductViewSet,
     RegisterView,
@@ -23,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('', include(router.urls)),
-
+    path('users/me/', CurrentUserView.as_view(), name='current-user'),
     # Auth
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),

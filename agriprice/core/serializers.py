@@ -26,7 +26,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'role', 'profile_photo']
 
 class ProductSerializer(serializers.ModelSerializer):
-    owner_username = serializers.SerializerMethodField()
+    owner_username = serializers.SerializerMethodField()  # remove 'source'
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -38,7 +38,6 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner', 'created_at']
 
     def get_owner_username(self, obj):
-        # Adjust according to your UserProfile relation
         if obj.owner and hasattr(obj.owner, 'user'):
             return obj.owner.user.username
         return "Unknown"

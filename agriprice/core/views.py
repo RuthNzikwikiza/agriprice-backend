@@ -15,15 +15,23 @@ from .serializers import (
     NotificationSerializer,
 )
 from .permissions import IsFarmerOrReadOnly, IsBuyer
-
+from rest_framework.permissions import IsAuthenticated
 
 def home(request):
     return HttpResponse("Hello Agriprice is live")
 
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
 
-# ----------------------------
-# Registration
-# ----------------------------
+    def get(self, request):
+        user = request.user
+        profile = getattr(user, "profile", None)
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            "role": profile.role if profile else None
+        })
+
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
