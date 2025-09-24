@@ -13,6 +13,7 @@ from .views import (
     NotificationListView,
     NotificationDetailView,
     NotificationMarkReadView,
+    UpdateProfileView,  
     home,
 )
 
@@ -24,7 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('', include(router.urls)),
+
+    # Current user profile
     path('users/me/', CurrentUserView.as_view(), name='current-user'),
+    path('users/me/edit/', UpdateProfileView.as_view(), name='update-profile'),  # NEW
+
     # Auth
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),

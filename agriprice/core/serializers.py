@@ -16,14 +16,18 @@ class UserSerializer(serializers.ModelSerializer):
         UserProfile.objects.create(user=user, role=role, phone_number="", location="")
         return user
 
-
-# Simplified UserProfileSerializer
 class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+    profile_photo = serializers.ImageField(required=False)
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'username', 'role', 'profile_photo']
+        fields = [
+            'id', 'username', 'role', 'profile_photo', 'phone_number',
+            'location', 'verified', 'points', 'ratings', 'status', 'bio'
+        ]
+        read_only_fields = ['points', 'ratings', 'status', 'verified']
+
 
 class ProductSerializer(serializers.ModelSerializer):
     owner_username = serializers.SerializerMethodField()  

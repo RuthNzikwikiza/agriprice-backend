@@ -26,11 +26,43 @@ class CurrentUserView(APIView):
     def get(self, request):
         user = request.user
         profile = getattr(user, "profile", None)
+        if not profile:
+            return Response({"detail": "Profile not created yet"}, status=status.HTTP_200_OK)
+
         return Response({
             "username": user.username,
             "email": user.email,
-            "role": profile.role if profile else None
+            "role": profile.role,
+            "phone_number": profile.phone_number,
+            "location": profile.location,
+            "verified": profile.verified,
+            "points": profile.points,
+            "ratings": str(profile.ratings),
+            "status": profile.status,
+            "bio": profile.bio,
+            "profile_photo": request.build_absolute_uri(profile.profile_photo.url) if profile.profile_photo else None
         })
+class UpdateProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get(self, request):
+        profile = getattr(request.user, 'profile', None)
+        if not profile:
+            return Response({"detail": "Profile not created yet"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def put(self, request):
+        profile = getattr(request.user, 'profile', None)
+        if not profile:
+            serializer = UserProfileSerializer(data=request.data)
+        else:
+            serializer = UserProfileSerializer(profile, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
