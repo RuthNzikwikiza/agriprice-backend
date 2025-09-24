@@ -38,7 +38,7 @@ class PricePrediction(models.Model):
         unique_together = ('product', 'season', 'predicted_by')  
 
     def __str__(self):
-        return f"{self.product.name} ({self.season}): Predicted {self.predicted_price}"
+        return f"{self.product.name} ({self.season}): Predicted{self.predicted_price}"
 
 
 class Notification(models.Model):
