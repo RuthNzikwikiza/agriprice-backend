@@ -35,7 +35,7 @@ class PricePrediction(models.Model):
 
     class Meta:
         ordering = ['-predicted_at']
-        unique_together = ()  # Temporarily empty; add real fields later
+        unique_together = ('product', 'season', 'predicted_by')  
 
     def __str__(self):
         return f"{self.product.name} ({self.season}): Predicted {self.predicted_price}"
