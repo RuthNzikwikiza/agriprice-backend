@@ -1,5 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 from .models import PricePrediction, Notification, Product, UserProfile
 
 
@@ -44,3 +45,11 @@ def notify_new_product(sender, instance, created, **kwargs):
             for recipient in recipients
         ]
         Notification.objects.bulk_create(notifications)
+        
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and not hasattr(instance, 'profile'):
+        UserProfile.objects.create(
+            user=instance,
+            role=getattr(instance, 'role', 'buyer') 
+        )

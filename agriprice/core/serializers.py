@@ -26,7 +26,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'role', 'profile_photo']
 
 class ProductSerializer(serializers.ModelSerializer):
-    owner_username = serializers.SerializerMethodField()  # remove 'source'
+    owner_username = serializers.SerializerMethodField()  
     image_url = serializers.SerializerMethodField()
 
     class Meta:
