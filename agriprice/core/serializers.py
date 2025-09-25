@@ -18,17 +18,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
-    profile_photo = serializers.ImageField(required=False)
+    email = serializers.EmailField(source='user.email', required=True)
+    profile_photo = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = UserProfile
         fields = [
-            'id', 'username', 'role', 'profile_photo', 'phone_number',
+            'id', 'username', 'email', 'role', 'profile_photo', 'phone_number',
             'location', 'verified', 'points', 'ratings', 'status', 'bio'
         ]
         read_only_fields = ['points', 'ratings', 'status', 'verified']
 
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+        email = user_data.get('email')
+        if email:
+            instance.user.email = email
+            instance.user.save()
 
+        return super().update(instance, validated_data)
 class ProductSerializer(serializers.ModelSerializer):
     owner_username = serializers.SerializerMethodField()  
     image_url = serializers.SerializerMethodField()

@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Current user profile
     path('users/me/', CurrentUserView.as_view(), name='current-user'),
-    path('users/me/edit/', UpdateProfileView.as_view(), name='update-profile'),  # NEW
+    path('users/me/edit/', UpdateProfileView.as_view(), name='update-profile'),  
 
     # Auth
     path('register/', RegisterView.as_view(), name='register'),
