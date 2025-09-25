@@ -1,6 +1,7 @@
 # core/urls.py
 from django.urls import path
 from . import views
+from .views import NotificationCountView
 
 urlpatterns = [
     # Price Predictions
@@ -10,4 +11,5 @@ urlpatterns = [
 
     # Notifications (read-only)
     path('notifications/', views.NotificationListView.as_view(), name='notifications-list'),
+    path('notifications/count/', NotificationCountView.as_view(), name='notification-count'),
 ]

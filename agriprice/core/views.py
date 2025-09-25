@@ -49,3 +49,11 @@ class NotificationMarkReadView(APIView):
             return Response({"detail": "Notification marked as read"}, status=status.HTTP_200_OK)
         except Notification.DoesNotExist:
             return Response({"detail": "Notification not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class NotificationCountView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        count = Notification.objects.filter(user=request.user, is_read=False).count()
+        return Response({"count": count})
