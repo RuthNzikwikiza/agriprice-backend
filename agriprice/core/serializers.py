@@ -15,11 +15,10 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         UserProfile.objects.create(user=user, role=role, phone_number="", location="")
         return user
-
 class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', required=True)
-    profile_photo = serializers.ImageField(required=False, allow_null=True)
+    profile_photo = serializers.ImageField(required=False, allow_null=True, use_url=True)
 
     class Meta:
         model = UserProfile
@@ -32,11 +31,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user', {})
         email = user_data.get('email')
-        if email:
+        if email and instance.user.email != email:
             instance.user.email = email
             instance.user.save()
+        profile_photo = validated_data.get('profile_photo', None)
+        if profile_photo:
+            instance.profile_photo = profile_photo
 
-        return super().update(instance, validated_data)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
+
+
 class ProductSerializer(serializers.ModelSerializer):
     owner_username = serializers.SerializerMethodField()  
     image_url = serializers.SerializerMethodField()

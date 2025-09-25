@@ -56,13 +56,13 @@ class UpdateProfileView(APIView):
     def put(self, request):
         profile = getattr(request.user, 'profile', None)
         if not profile:
-            serializer = UserProfileSerializer(data=request.data)
-        else:
-            serializer = UserProfileSerializer(profile, data=request.data, partial=True)
+            return Response({"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
+        serializer = UserProfileSerializer(profile, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
+        serializer.save() 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
