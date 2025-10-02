@@ -24,7 +24,6 @@ NOTIFICATION_TYPES = [
     ('new_product', 'New Product Added'),
 ]
 
-
 class PricePrediction(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='price_predictions')
     predicted_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -35,10 +34,15 @@ class PricePrediction(models.Model):
 
     class Meta:
         ordering = ['-predicted_at']
-        unique_together = ('product', 'season', 'predicted_by')  
+        unique_together = ('product', 'season', 'predicted_by')
 
     def __str__(self):
-        return f"{self.product.name} ({self.season}): Predicted{self.predicted_price}"
+        return f"{self.product.name} ({self.season}): Predicted {self.predicted_price}"
+
+    @classmethod
+    def create_with_product_name(cls, product_name, **kwargs):
+        product, _ = Product.objects.get_or_create(name=product_name)
+        return cls.objects.create(product=product, **kwargs)
 
 
 class Notification(models.Model):
